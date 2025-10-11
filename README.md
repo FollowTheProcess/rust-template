@@ -1,6 +1,6 @@
-# Rust Copier
+# Rust Template
 
-![License](https://img.shields.io/github/license/FollowTheProcess/rust_copier.svg)
+![License](https://img.shields.io/github/license/FollowTheProcess/rust-template.svg)
 
 A clean, simple Rust copier template.
 
@@ -44,7 +44,7 @@ pipx install copier
 * Call copier with this template and answer all the questions
 
 ``` shell
-copier gh:FollowTheProcess/rust_copier /path/to/put/your/new/project
+copier gh:FollowTheProcess/rust-template /path/to/put/your/new/project
 ```
 
 * Create a git repo (if not using the gh cli) and start developing
