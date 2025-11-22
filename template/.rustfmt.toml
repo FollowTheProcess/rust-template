@@ -1,5 +1,2 @@
-# This file is intentionally left blank
-#
-# The empty `rustfmt.toml` makes rustfmt use the default configuration,
-# overriding any which may be found in the contributor's home or parent
-# folders.
+edition = "2024"
+style_edition = "2024"
