@@ -21,3 +21,12 @@ path = "src/main.rs"
 {%- endif %}
 
 [dependencies]
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+pedantic = "warn"
+nursery = "warn"
+unwrap_used = "deny"
