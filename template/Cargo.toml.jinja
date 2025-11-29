@@ -25,8 +25,11 @@ path = "src/main.rs"
 [lints.rust]
 unsafe_code = "forbid"
 missing_docs = "warn"
+unused_must_use = "deny"
 
 [lints.clippy]
-pedantic = "warn"
-nursery = "warn"
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
 unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
