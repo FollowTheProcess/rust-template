@@ -1,0 +1,110 @@
+[project]
+name = "rust-template"
+version = "0.54.1"
+description = "A clean, simple Rust copier template."
+authors = [{ name = "Tom Fleet", email = "me@followtheprocess.codes" }]
+readme = "README.md"
+requires-python = ">=3.14,<4"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+dependencies = ["copier==9.11.0"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4.1",
+  "pytest-clarity>=1.0.1",
+  "ruff>=0.12.1",
+  "PyYAML>=6.0.2",
+  "types-pyyaml>=6.0.12.20240808",
+  "ty>=0.0.1a21",
+]
+
+[project.urls]
+Repository = "https://github.com/FollowTheProcess/go-template"
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "error",
+  "ignore::DeprecationWarning",             # pydantic v2 inside copier
+  "ignore::copier.vcs.DirtyLocalWarning",
+  "ignore::copier.vcs.ShallowCloneWarning",
+]
+minversion = "7.0"
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = [
+  "template/**/*", # Gets confused inside the template
+]
+
+[tool.ruff.format]
+# https://docs.astral.sh/ruff/settings/#format
+docstring-code-format = true
+quote-style = "double"
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+  "ALL", # Lint all the things!
+]
+ignore = [
+  # Lots of 'D' rules conflict with one another, this seems to be the most stable config
+  "D203", # One blank line before class docstring
+  "D212", # Multi-line docstring summary should be on the first line
+  "D200", # One line docstring should all be on one line
+  "D401", # First line should be in imperative mood
+  "D205", # One blank line required between summary line and description
+  "D417", # Wants sphinx style docstrings
+  "D406", # Section names should end with a newline
+  "D407", # Missing dashed underline after section
+
+  # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  "W191",   # Tab indentation
+  "E111",   # Indentation with invalid multiple
+  "E114",   # Indentation with invalid multiple comment
+  "E117",   # Over indented
+  "E501",   # Line too long
+  "D206",   # Indent with spaces
+  "D300",   # Triple single quotes
+  "Q000",   # Bad quotes inline string
+  "Q001",   # Bad quotes multiline string
+  "Q002",   # Bad quotes docstring
+  "Q003",   # Avoidable escaped quote
+  "COM812", # Missing traiiling comma
+  "COM819", # Prohibited trailing comma
+  "ISC001", # Single line implicit string concatenation
+  "ISC002", # Multi line implicit string concatenation
+]
+unfixable = [
+  "F841", # Prevents ruff deleting "unused" variables you're still working on
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "ARG001", # Thinks pytest fixtures are unused arguments
+  "D104",   # Missing docstring in __init__.py in tests (which is fine)
+  "FBT001", # Tests are allowed positional bools (fixtures etc.)
+  "S",      # Security stuff is noise in tests
+  "TC",     # Tests will be run with dev dependencies so we don't care about separating type hints
+]
+"conftest.py" = [
+  "TC", # Conftest is only run for tests (with dev dependencies)
+]

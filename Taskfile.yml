@@ -1,0 +1,46 @@
+# https://taskfile.dev
+
+version: "3"
+
+env:
+  FORCE_COLOR: true
+
+tasks:
+  default:
+    desc: List all available tasks
+    silent: true
+    cmds:
+      - task --list
+
+  dev:
+    desc: Set up the development environment
+    cmds:
+      - uv sync --all-extras --dev
+
+  test:
+    desc: Run the unit tests
+    cmds:
+      - uv run pytest -vv
+
+  fmt:
+    desc: Format all the things
+    cmds:
+      - uv run ruff format .
+
+  lint:
+    desc: Run linting
+    cmds:
+      - uv run ruff check .
+      - uv run ty check .
+
+  check:
+    desc: Run all the checks
+    cmds:
+      - task: test
+      - task: fmt
+      - task: lint
+
+  update:
+    desc: Update all dependencies
+    cmds:
+      - uv sync --upgrade --all-extras --dev
