@@ -7,7 +7,7 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  group: {% raw %}${{ github.workflow }}-${{ github.head_ref || github.ref }}{% endraw %}
   cancel-in-progress: true
 
 permissions: {}
@@ -18,3 +18,8 @@ jobs:
     permissions:
       contents: read
     uses: FollowTheProcess/ci/.github/workflows/Rust.yml@v3
+    {%- if nextest %}
+    with:
+      nextest: {{ nextest | lower }}
+      nextest-profile: ci
+      {%- endif %}

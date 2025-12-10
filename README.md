@@ -17,11 +17,8 @@ The project template comes with a ready to go GitHub Actions configuration file 
 * Testing with `cargo test`
 * Linting with `clippy`
 * Formatting with `rustfmt`
+* Option to use [nextest] as a test runner
 * Building, cross-compilation and release (for binary packages)
-
-### [GitHub CLI]
-
-Option to use the new GitHub CLI to create a GitHub repo for you during project creation. (You'll need to have this already installed)
 
 ### GitHub Issue Labelling
 
@@ -35,21 +32,13 @@ This is automatically run when you push a new tag to main.
 
 ## Usage
 
-* Ensure you have [copier] installed:
-
-``` shell
-pipx install copier
-```
-
 * Call copier with this template and answer all the questions
 
 ``` shell
-copier gh:FollowTheProcess/rust-template /path/to/put/your/new/project
+uvx copier gh:FollowTheProcess/rust-template /path/to/put/your/new/project
 ```
 
-* Create a git repo (if not using the gh cli) and start developing
-
-* Make a first commit to set up the github repo (if you didn't use the gh cli)
+* Create a git repo and start developing
 
 * That should be it! from now on everything will be handled automatically. All you need to do is write code, tests and docs! Your code will be style checked, your tests will be run etc.
 
@@ -57,3 +46,4 @@ copier gh:FollowTheProcess/rust-template /path/to/put/your/new/project
 [GitHub CLI]: https://cli.github.com
 [copier]: https://github.com/copier-org/copier
 [Release Drafter]: https://github.com/release-drafter/release-drafter
+[nextest]: https://nexte.st
