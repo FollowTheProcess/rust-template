@@ -24,6 +24,11 @@ description:
   help: Short description of your project
   type: str
 
+nextest:
+  help: Use nextest as a test runner
+  type: bool
+  default: false
+
 license:
   help: Which open source license to use
   type: str
