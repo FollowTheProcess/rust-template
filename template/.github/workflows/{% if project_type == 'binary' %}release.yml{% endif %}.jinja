@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -112,7 +112,7 @@ jobs:
           repo: cross-rs/cross
 
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build
         run: {% raw %}${{ matrix.build.cmd }}{% endraw %} build --release --locked --target {% raw %}${{ matrix.build.target }}{% endraw %}
@@ -124,7 +124,7 @@ jobs:
           cd -
 
       - name: Upload Built Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: {{binary_name}}-{% raw %}${{ needs.version.outputs.version }}-${{ matrix.build.platform }}-${{ matrix.build.arch }}.tar.gz{% endraw %}
           path: {{binary_name}}-{% raw %}${{ needs.version.outputs.version }}-${{ matrix.build.platform }}-${{ matrix.build.arch }}.tar.gz{% endraw %}
@@ -142,10 +142,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get Built Binaries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
 
       - name: Calculate Checksums
         run: |
@@ -178,7 +178,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
