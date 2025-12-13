@@ -124,7 +124,7 @@ jobs:
           cd -
 
       - name: Upload Built Binaries
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: {{binary_name}}-{% raw %}${{ needs.version.outputs.version }}-${{ matrix.build.platform }}-${{ matrix.build.arch }}.tar.gz{% endraw %}
           path: {{binary_name}}-{% raw %}${{ needs.version.outputs.version }}-${{ matrix.build.platform }}-${{ matrix.build.arch }}.tar.gz{% endraw %}
@@ -145,7 +145,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Get Built Binaries
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
 
       - name: Calculate Checksums
         run: |
