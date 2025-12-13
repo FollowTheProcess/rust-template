@@ -1,6 +1,6 @@
 [project]
 name = "rust-template"
-version = "0.54.2"
+version = "0.54.3"
 description = "A clean, simple Rust copier template."
 authors = [{ name = "Tom Fleet", email = "me@followtheprocess.codes" }]
 readme = "README.md"
