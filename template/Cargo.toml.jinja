@@ -2,12 +2,11 @@
 name = "{{project_slug}}"
 version = "0.1.0"
 edition = "2024"
-authors = [ "{{author_name}} <{{author_email}}>" ]
 description = "{{description}}"
-license = "{{license}}"
+readme = "README.md"
 homepage = "{{github_url}}"
 repository = "{{github_url}}"
-readme = "README.md"
+license = "{{license}}"
 keywords = [ "keywords", "here" ]
 categories = [ "command-line-utilities" ]
 
@@ -22,14 +21,25 @@ path = "src/main.rs"
 
 [dependencies]
 
-[lints.rust]
-unsafe_code = "forbid"
-missing_docs = "warn"
-unused_must_use = "deny"
-
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
 nursery = { level = "warn", priority = -1 }
-unwrap_used = "deny"
+
+# Prevent panics
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+exit = "deny"
 expect_used = "deny"
+indexing_slicing = "deny"
 panic = "deny"
+panic_in_result_fn = "deny"
+string_slice = "deny"
+unchecked_time_subtraction = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+unwrap_used = "deny"
+
+[lints.rust]
+missing_docs = "warn"
+unsafe_code = "forbid"
+unused_must_use = "deny"
