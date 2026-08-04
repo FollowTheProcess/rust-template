@@ -1,0 +1,66 @@
+{
+  description = "{{ description }}";
+
+  inputs = {
+    nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { self, nixpkgs, fenix }:
+    let
+      systems = [ "aarch64-darwin" "x86_64-linux" "aarch64-linux" ];
+      forEachSystem = nixpkgs.lib.genAttrs systems;
+
+      pkgsFor = system: import nixpkgs {
+        inherit system;
+        overlays = [ fenix.overlays.default ];
+      };
+
+      toolchainFor = packages: packages.fenix.stable.withComponents [
+        "cargo"
+        "clippy"
+        "rust-src"
+        "rustc"
+        "rustfmt"
+      ];
+    in {
+      packages = forEachSystem (system:
+        let
+          packages = pkgsFor system;
+          toolchain = toolchainFor packages;
+          rustPlatform = packages.makeRustPlatform {
+            cargo = toolchain;
+            rustc = toolchain;
+          };
+        in {
+          default = rustPlatform.buildRustPackage {
+            pname = "{{ project_slug }}";
+            version = "0.1.0";
+            src = ./.;
+            cargoLock = {
+              lockFile = ./Cargo.lock;
+              allowBuiltinFetchGit = true;
+            };
+          };
+        });
+
+      devShells = forEachSystem (system:
+        let packages = pkgsFor system;
+        in {
+          default = packages.mkShell {
+            packages = [
+              (toolchainFor packages)
+              packages.fenix.rust-analyzer
+              packages.cargo-nextest
+            ];
+
+            shellHook = ''
+                echo "👋🏻 Welcome to the {{ project_slug }} devShell"
+            '';
+          };
+        });
+    };
+}

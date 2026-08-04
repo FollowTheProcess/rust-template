@@ -42,6 +42,7 @@ def template(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Path]:
             "github_url": "https://github.com/TestUser/testy",
             "author_name": "Test McTest",
             "author_email": "testmctest@gmail.com",
+            "flake": True,
         },
         vcs_ref="HEAD",
     )

@@ -55,4 +55,9 @@ author_email:
   help: Your email address
   type: str
 
+flake:
+  help: Generate a nix flake for this project
+  type: bool
+  default: true
+
 _subdirectory: template
