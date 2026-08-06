@@ -3,40 +3,39 @@
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, fenix }:
-    let
+  outputs = inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "aarch64-darwin" "x86_64-linux" "aarch64-linux" ];
-      forEachSystem = nixpkgs.lib.genAttrs systems;
 
-      pkgsFor = system: import nixpkgs {
-        inherit system;
-        overlays = [ fenix.overlays.default ];
-      };
-
-      toolchainFor = packages: packages.fenix.stable.withComponents [
-        "cargo"
-        "clippy"
-        "rust-src"
-        "rustc"
-        "rustfmt"
-      ];
-    in {
-      packages = forEachSystem (system:
+      perSystem = { pkgs, inputs', ... }:
         let
-          packages = pkgsFor system;
-          toolchain = toolchainFor packages;
-          rustPlatform = packages.makeRustPlatform {
+          fenix = inputs'.fenix.packages;
+
+          toolchain = fenix.stable.withComponents [
+            "cargo"
+            "clippy"
+            "rust-src"
+            "rustc"
+            "rustfmt"
+          ];
+
+          rustPlatform = pkgs.makeRustPlatform {
             cargo = toolchain;
             rustc = toolchain;
           };
-        in {
-          default = rustPlatform.buildRustPackage {
+        in
+        {
+          packages.default = rustPlatform.buildRustPackage {
             pname = "{{ project_slug }}";
             version = "0.1.0";
             src = ./.;
@@ -45,22 +44,18 @@
               allowBuiltinFetchGit = true;
             };
           };
-        });
 
-      devShells = forEachSystem (system:
-        let packages = pkgsFor system;
-        in {
-          default = packages.mkShell {
+          devShells.default = pkgs.mkShell {
             packages = [
-              (toolchainFor packages)
-              packages.fenix.rust-analyzer
-              packages.cargo-nextest
+              toolchain
+              fenix.rust-analyzer
+              pkgs.cargo-nextest
             ];
 
             shellHook = ''
-                echo "👋🏻 Welcome to the {{ project_slug }} devShell"
+              echo "👋🏻 Welcome to the {{ project_name }} devShell"
             '';
           };
-        });
+        };
     };
 }
